@@ -1,4 +1,5 @@
 import 'package:dummyapi_client/data/models/user/user.dart';
+import 'package:dummyapi_client/data/models/user/user_detail.dart';
 import 'package:dummyapi_client/data/providers/data_providers.dart';
 import 'package:get/get.dart';
 
@@ -8,6 +9,8 @@ class UserRepository {
   static int userPage = -1;
 
   bool isLoading = false;
+
+  static RxString selectedUser = "".obs;
 
   void refresh() {
     userPage = -1;
@@ -31,5 +34,11 @@ class UserRepository {
     } finally {
       isLoading = false;
     }
+  }
+
+  Future<UserData> getUserData() async {
+    var response = await dataProvider.getDetailUser(selectedUser.value);
+    UserData user = UserData.fromJSON(response);
+    return user;
   }
 }

@@ -24,22 +24,21 @@ class DataProvider {
     }
   }
 
-  Future<Map<String, dynamic>> getDetailUser() async {
+  Future<Map<String, dynamic>> getDetailUser(String id) async {
     try {
-      var response =
-          await connect.get('$baseUrl/user/60d0fe4f5311236168a109ca');
+      var response = await connect.get('$baseUrl/user/$id');
       print("response data : $response");
-      return response.data["data"];
+      return response.data;
     } on DioError catch (e) {
       print(e.message);
       rethrow;
     }
   }
 
-  Future<List<dynamic>> getPostUser() async {
+  Future<List<dynamic>> getPostUser(String id, int page) async {
     try {
-      var response =
-          await connect.get('$baseUrl/user/60d0fe4f5311236168a109ca/post');
+      var response = await connect
+          .get('$baseUrl/user/$id/post?page=$page&limit=$apiLimit');
       print("response data : $response");
       return response.data["data"];
     } on DioError catch (e) {

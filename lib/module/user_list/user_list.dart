@@ -1,6 +1,7 @@
 import 'package:dummyapi_client/const/color.dart';
 import 'package:dummyapi_client/const/text_style.dart';
 import 'package:dummyapi_client/data/repository/user/user.dart';
+import 'package:dummyapi_client/module/user_detail/user_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:heroicons/heroicons.dart';
@@ -61,7 +62,14 @@ class _UserListState extends State<UserList> {
             itemCount: UserRepository.userList.value.length,
             itemBuilder: (context, index) {
               return GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  UserRepository.selectedUser.value =
+                      UserRepository.userList.value[index].id;
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => UserDetail()),
+                  );
+                },
                 child: ListTile(
                   leading: SizedBox(
                     height: 56,

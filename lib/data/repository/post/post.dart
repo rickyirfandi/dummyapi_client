@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 class PostRepository {
   DataProvider dataProvider = DataProvider();
   static RxList<Post> postList = <Post>[].obs;
+  static RxList<Post> userPostList = <Post>[].obs;
+  static RxList<Post> filteredPostList = <Post>[].obs;
   static int postPage = -1;
 
   bool isLoading = false;
@@ -15,6 +17,8 @@ class PostRepository {
   void refresh() {
     postPage = -1;
     postList.clear();
+    userPostList.clear();
+    filteredPostList.clear();
     isLoading = false;
   }
 
@@ -39,5 +43,31 @@ class PostRepository {
     } finally {
       isLoading = false;
     }
+  }
+
+  Future<void> getUserPost(String id) async {
+    if (isLoading) return;
+    isLoading = true;
+    postPage++;
+    try {
+      var response = await dataProvider.getPostUser(id, postPage);
+
+      for (int x = 0; x < response.length; x++) {
+        Post _post = Post.fromJSON(response[x]);
+        userPostList.add(_post);
+        filteredPostList.add(_post);
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      isLoading = false;
+    }
+  }
+
+  Future<void> filterUserPost(String filter) async {
+    if (filter == "") filteredPostList.value = userPostList.value;
+    filteredPostList.value = userPostList.value
+        .where((element) => element.text.contains(filter))
+        .toList();
   }
 }
