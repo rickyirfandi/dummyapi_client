@@ -1,6 +1,7 @@
 import 'package:dummyapi_client/const/color.dart';
 import 'package:dummyapi_client/const/text_style.dart';
 import 'package:dummyapi_client/data/repository/user/user.dart';
+import 'package:dummyapi_client/module/post_list/post_list.dart';
 import 'package:dummyapi_client/module/user_list/user_list.dart';
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
@@ -28,7 +29,7 @@ class _HomeState extends State<Home> {
           onPageChanged: onPageChanged,
           children: <Widget>[
             UserList(),
-            const SizedBox(),
+            PostList(),
             const SizedBox(),
           ],
         ),
