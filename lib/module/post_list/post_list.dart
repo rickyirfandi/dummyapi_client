@@ -49,9 +49,39 @@ class _PostListState extends State<PostList> {
         centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Text(
-          "Users",
-          style: reguler16.copyWith(color: kPrimaryColor),
+        title: Obx(
+          () => GestureDetector(
+            onTap: () {
+              PostRepository.filter.value = "";
+              post.refresh();
+              post.getPost();
+            },
+            child: Chip(
+              label: (PostRepository.filter.value == "")
+                  ? Text(
+                      "Posts",
+                      style: reguler16.copyWith(color: kPrimaryColor),
+                    )
+                  : Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          PostRepository.filter.value,
+                          style: reguler16.copyWith(color: kPrimaryColor),
+                        ),
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        const HeroIcon(
+                          HeroIcons.xCircle,
+                          solid: true,
+                          size: 20,
+                          color: kPrimaryColor,
+                        )
+                      ],
+                    ),
+            ),
+          ),
         ),
       ),
       body: Obx(
@@ -65,34 +95,6 @@ class _PostListState extends State<PostList> {
             itemCount: PostRepository.postList.value.length,
             itemBuilder: (context, index) {
               return CardPost(post: PostRepository.postList.value[index]);
-              return GestureDetector(
-                onTap: () {},
-                child: ListTile(
-                  leading: SizedBox(
-                    height: 56,
-                    width: 56,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image.network(
-                          PostRepository.postList.value[index].image),
-                    ),
-                  ),
-                  title: Text(
-                    PostRepository.postList.value[index].text,
-                    style: reguler15.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text(
-                    PostRepository.postList.value[index].tags[0],
-                    style: reguler15.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  trailing: const HeroIcon(
-                    HeroIcons.chevronRight,
-                    solid: true,
-                    size: 22,
-                    color: kPrimaryColor,
-                  ),
-                ),
-              );
             },
           ),
         ),

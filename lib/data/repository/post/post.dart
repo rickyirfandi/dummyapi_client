@@ -10,6 +10,8 @@ class PostRepository {
 
   bool isLoading = false;
 
+  static RxString filter = "".obs;
+
   void refresh() {
     postPage = -1;
     postList.clear();
@@ -21,7 +23,12 @@ class PostRepository {
     isLoading = true;
     postPage++;
     try {
-      var response = await dataProvider.getAllPost(postPage);
+      var response;
+      if (filter.value != "") {
+        response = await dataProvider.getPostByTag(filter.value, postPage);
+      } else {
+        response = await dataProvider.getAllPost(postPage);
+      }
 
       for (int x = 0; x < response.length; x++) {
         Post _post = Post.fromJSON(response[x]);

@@ -1,6 +1,7 @@
 import 'package:dummyapi_client/const/color.dart';
 import 'package:dummyapi_client/const/text_style.dart';
 import 'package:dummyapi_client/data/models/post/post.dart';
+import 'package:dummyapi_client/data/repository/post/post.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -14,6 +15,8 @@ class CardPost extends StatefulWidget {
 }
 
 class _CardPostState extends State<CardPost> {
+  PostRepository repo = PostRepository();
+
   Widget user() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4.0),
@@ -91,13 +94,21 @@ class _CardPostState extends State<CardPost> {
                 Row(
                   children: [
                     for (int x = 0; x < widget.post.tags.length; x++)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                        child: Chip(
-                          backgroundColor: kPrimaryColor,
-                          label: Text(
-                            widget.post.tags[x],
-                            style: reguler15.copyWith(color: Colors.white),
+                      GestureDetector(
+                        onTap: () {
+                          PostRepository.filter.value = widget.post.tags[x];
+                          PostRepository.postPage = -1;
+                          PostRepository.postList.clear();
+                          repo.getPost();
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                          child: Chip(
+                            backgroundColor: kPrimaryColor,
+                            label: Text(
+                              widget.post.tags[x],
+                              style: reguler15.copyWith(color: Colors.white),
+                            ),
                           ),
                         ),
                       )

@@ -60,9 +60,10 @@ class DataProvider {
     }
   }
 
-  Future<List<dynamic>> getPostByTag(String tag) async {
+  Future<List<dynamic>> getPostByTag(String tag, int page) async {
     try {
-      var response = await connect.get('$baseUrl/tag/$tag/post');
+      var response = await connect
+          .get('$baseUrl/tag/$tag/post?page=$page&limit=$apiLimit');
       print("response data : $response");
       return response.data["data"];
     } on DioError catch (e) {
